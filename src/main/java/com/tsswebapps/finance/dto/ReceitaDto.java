@@ -1,12 +1,29 @@
-package com.tsswebapps.finance.controller.dto;
+package com.tsswebapps.finance.dto;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
+
+import com.tsswebapps.finance.model.Receita;
+
+
 public class ReceitaDto {
+	@NotBlank
 	private String descricao;
+	@NotBlank
 	private Double valor;
+	@NotBlank
 	private LocalDateTime dataLancamento;
+	
+	public Receita toReceita() {
+		Receita receita = new Receita();
+		receita.setDescricao(this.descricao);
+		receita.setDataLancamento(this.dataLancamento);
+		receita.setValor(this.valor);
+		
+		return receita;
+	}
 
 	public ReceitaDto(String descricao, Double valor, LocalDateTime dataLancamento) {
 		this.descricao = descricao;

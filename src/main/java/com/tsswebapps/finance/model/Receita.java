@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.tsswebapps.finance.dto.ReceitaDto;
+
 @Entity
 public class Receita {
 	@Id
@@ -18,6 +20,12 @@ public class Receita {
 	private String descricao;
 	private Double valor;
 	private LocalDateTime dataLancamento;
+	
+	public ReceitaDto toReceitaDto() {
+		ReceitaDto receitaDto = new ReceitaDto(
+				this.descricao, this.valor, this.dataLancamento);
+		return receitaDto;
+	}
 
 	public Receita() {
 	}
