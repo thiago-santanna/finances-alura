@@ -1,7 +1,6 @@
 package com.tsswebapps.finance.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -42,19 +41,11 @@ public class ReceitaController {
 	private ApagarReceitaService apagarReceita;
 	
 	@PostMapping
-	public ResponseEntity<Receita> cadastro(@Valid @RequestBody ReceitaDto receitaDto, BindingResult result) {
+	public ResponseEntity<Receita> cadastro(@Valid @RequestBody ReceitaDto receitaDto, BindingResult resultValidation) {
+		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
 		
-		if(result.hasErrors()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);					
-		}
 		
-		Boolean duplicada = duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
-		
-		if(duplicada) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		
-		Receita receita = salvarReceitaService.execute(receitaDto.toReceita());
+		Receita receita = salvarReceitaService.execute(receitaDto.toReceita(), resultValidation);
 		
 		return new ResponseEntity<Receita>(receita, HttpStatus.CREATED);	
 	}
@@ -66,43 +57,26 @@ public class ReceitaController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ReceitaDto> porId(@PathVariable Long id){	
-		Optional<Receita> optionalReceita = receitaIdentificacao.execute(id);
-		
-		if(optionalReceita.isEmpty()) {
-			return new ResponseEntity<ReceitaDto>(HttpStatus.NOT_FOUND);
-		}
-		Receita receita = optionalReceita.get();
-		
+	public ResponseEntity<ReceitaDto> porId(@PathVariable Long id){
+		Receita receita = receitaIdentificacao.execute(id);
 		return new ResponseEntity<ReceitaDto>(receita.toReceitaDto(), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ReceitaDto> alterar(@PathVariable Long id, @Valid @RequestBody ReceitaDto receitaDto){
-		Optional<Receita> optionalReceita = receitaIdentificacao.execute(id);
+	public ResponseEntity<ReceitaDto> alterar(@PathVariable Long id, 
+			@Valid @RequestBody ReceitaDto receitaDto, BindingResult resultValidation){
 		
-		if(optionalReceita.isEmpty()) {
-			return new ResponseEntity<ReceitaDto>(HttpStatus.NOT_FOUND);
-		}
-		
-		Receita receitaAtual = optionalReceita.get();
+		Receita receitaAtual = receitaIdentificacao.execute(id);
 		receitaAtual.copyReceitaDto(receitaDto);
 			
-		Receita receitaSalva = salvarReceitaService.execute(receitaAtual);
-		return new ResponseEntity<ReceitaDto>(receitaSalva.toReceitaDto(), HttpStatus.OK);
-		
+		Receita receitaSalva = salvarReceitaService.execute(receitaAtual, resultValidation);
+		return new ResponseEntity<ReceitaDto>(receitaSalva.toReceitaDto(), HttpStatus.OK);		
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> apagar(@PathVariable Long id){
-		Optional<Receita> optionalReceita = receitaIdentificacao.execute(id);
-		
-		if(optionalReceita.isEmpty()) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-		}	
-		
-		apagarReceita.execute(id);
-		
+		receitaIdentificacao.execute(id);		
+		apagarReceita.execute(id);		
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

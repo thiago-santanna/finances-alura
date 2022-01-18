@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tsswebapps.finance.exceptions.receita.ReceitaBadRequestException;
 import com.tsswebapps.finance.model.Receita;
 import com.tsswebapps.finance.repository.IReceitaRepository;
 
@@ -14,10 +15,12 @@ public class PesquisarReceitaDuplicadaMesService {
 	@Autowired
 	private IReceitaRepository receitaRepository;
 	
-	public Boolean execute(String descricao, LocalDate dataLancamento) {
+	public void execute(String descricao, LocalDate dataLancamento) {
 		List<Receita> temReceita = receitaRepository.findByDescricaoAndDataLancamento(
 				descricao, dataLancamento);
 		
-		return !temReceita.isEmpty();
+		if(!temReceita.isEmpty()) {
+			throw new ReceitaBadRequestException("Receita já cadastrada esse mês.");
+		}
 	}
 }
