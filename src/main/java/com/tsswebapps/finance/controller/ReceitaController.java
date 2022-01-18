@@ -3,7 +3,6 @@ package com.tsswebapps.finance.controller;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,11 +33,13 @@ public class ReceitaController {
 	
 	@PostMapping
 	public ResponseEntity<Receita> cadastro(@Valid @RequestBody ReceitaDto receitaDto, BindingResult result) {
+		System.out.println("pass 1");
+		
 		if(result.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);					
 		}
 		
-		Boolean duplicada = duplicadaMes.excute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
+		Boolean duplicada = duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
 		
 		if(duplicada) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
