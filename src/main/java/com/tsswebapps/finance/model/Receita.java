@@ -26,6 +26,12 @@ public class Receita {
 				this.descricao, this.valor, this.dataLancamento);
 		return receitaDto;
 	}
+	
+	public void copyReceitaDto(ReceitaDto receitaDto) {
+		this.descricao = receitaDto.getDescricao();
+		this.dataLancamento = receitaDto.getDataLancamento();
+		this.valor = receitaDto.getValor();
+	}
 
 	public Receita() {
 	}
@@ -59,7 +65,6 @@ public class Receita {
 	}
 
 	public Receita(String descricao, Double valor, LocalDate dataLancamento) {
-		super();
 		this.descricao = descricao;
 		this.valor = valor;
 		this.dataLancamento = dataLancamento;

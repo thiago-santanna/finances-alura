@@ -12,7 +12,7 @@ import com.tsswebapps.finance.repository.IReceitaRepository;
 @Service
 public class PesquisarReceitaDuplicadaMesService {
 	@Autowired
-	public IReceitaRepository receitaRepository;
+	private IReceitaRepository receitaRepository;
 	
 	public Boolean execute(String descricao, LocalDate dataLancamento) {
 		List<Receita> temReceita = receitaRepository.findByDescricaoAndDataLancamento(
