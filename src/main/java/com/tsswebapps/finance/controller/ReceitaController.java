@@ -42,8 +42,7 @@ public class ReceitaController {
 	
 	@PostMapping
 	public ResponseEntity<Receita> cadastro(@Valid @RequestBody ReceitaDto receitaDto, BindingResult resultValidation) {
-		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
-		
+		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());		
 		
 		Receita receita = salvarReceitaService.execute(receitaDto.toReceita(), resultValidation);
 		

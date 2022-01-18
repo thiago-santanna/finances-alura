@@ -1,4 +1,4 @@
-package com.tsswebapps.finance.service.receita;
+package com.tsswebapps.finance.service.despesa;
 
 import javax.transaction.Transactional;
 
@@ -7,22 +7,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import com.tsswebapps.finance.exceptions.BadRequestException;
-import com.tsswebapps.finance.model.Receita;
-import com.tsswebapps.finance.repository.IReceitaRepository;
+import com.tsswebapps.finance.model.Despesa;
+import com.tsswebapps.finance.repository.IDespesaRepository;
 
 @Service
-public class SalvarReceitaService {
-	
+public class SalvarDespesaService {
+
 	@Autowired
-	private IReceitaRepository receitaRepository;
+	private IDespesaRepository despesaRepository;
 	
 	@Transactional
-	public Receita execute(Receita receita, BindingResult resultValidation) {
+	public Despesa execute(Despesa despesa, BindingResult resultValidation) {
 		if(resultValidation.hasErrors()) {
 			throw new BadRequestException("Informe todos os campos obrigatórios.");
 		}
 		
-		Receita receitaSalva = receitaRepository.save(receita);
-		return receitaSalva;
+		Despesa despesaSalva = despesaRepository.save(despesa);
+		return despesaSalva;
 	}
 }

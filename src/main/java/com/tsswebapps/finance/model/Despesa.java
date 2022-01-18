@@ -1,6 +1,6 @@
 package com.tsswebapps.finance.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -20,9 +20,9 @@ public class Despesa {
 	
 	private Double valor;
 	
-	private LocalDateTime dataLancamento;
+	private LocalDate dataLancamento;
 
-	public Despesa(String descricao, Double valor, LocalDateTime dataLancamento) {
+	public Despesa(String descricao, Double valor, LocalDate dataLancamento) {
 		this.descricao = descricao;
 		this.valor = valor;
 		this.dataLancamento = dataLancamento;
@@ -71,11 +71,11 @@ public class Despesa {
 		this.valor = valor;
 	}
 
-	public LocalDateTime getDataLancamento() {
+	public LocalDate getDataLancamento() {
 		return dataLancamento;
 	}
 
-	public void setDataLancamento(LocalDateTime dataLancamento) {
+	public void setDataLancamento(LocalDate dataLancamento) {
 		this.dataLancamento = dataLancamento;
 	}
 
