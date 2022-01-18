@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.tsswebapps.finance.dto.DespesaDto;
+
 @Entity
 public class Despesa {
 	@Id
@@ -21,6 +23,12 @@ public class Despesa {
 	private Double valor;
 	
 	private LocalDate dataLancamento;
+	
+	public void copyDespesaDto(DespesaDto despesaDto) {
+		this.descricao = despesaDto.getDescricao();
+		this.dataLancamento = despesaDto.getDataLancamento();
+		this.valor = despesaDto.getValor();
+	}
 
 	public Despesa(String descricao, Double valor, LocalDate dataLancamento) {
 		this.descricao = descricao;
@@ -81,5 +89,14 @@ public class Despesa {
 
 	public Long getId() {
 		return id;
+	}
+
+	public DespesaDto toDespesaDto() {
+		DespesaDto despesaDto = new DespesaDto();
+		despesaDto.setDescricao(this.descricao);
+		despesaDto.setDataLancamento(this.dataLancamento);
+		despesaDto.setValor(this.valor);
+		
+		return despesaDto;
 	}
 }

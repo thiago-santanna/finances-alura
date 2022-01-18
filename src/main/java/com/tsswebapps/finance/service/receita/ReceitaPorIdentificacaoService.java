@@ -18,7 +18,7 @@ public class ReceitaPorIdentificacaoService {
 		Optional<Receita> optional = receitaRepository.findById(id);
 		
 		if(optional.isEmpty()) {
-			throw new NotFoundException();
+			throw new NotFoundException("Receita não encontrada.");
 		}
 		
 		return optional.get();

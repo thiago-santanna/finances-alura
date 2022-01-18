@@ -19,7 +19,7 @@ public class NotFoundExceptionHandler {
 	@ExceptionHandler(NotFoundException.class)
 	public NegocioExceptionDto handleReceitaNotFound(NotFoundException exception) {
 		NegocioExceptionDto negocioException = new NegocioExceptionDto(
-				HttpStatus.NOT_FOUND.value(), "Receita não encontrada.", new Date());
+				HttpStatus.NOT_FOUND.value(), exception.getMessage(), new Date());
 
 		return negocioException;
 	}
