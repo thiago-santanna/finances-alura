@@ -1,5 +1,6 @@
 package com.tsswebapps.finance.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tsswebapps.finance.dto.DespesaDto;
+import com.tsswebapps.finance.model.Categoria;
 import com.tsswebapps.finance.model.Despesa;
 import com.tsswebapps.finance.service.despesa.ApagarDespesaService;
 import com.tsswebapps.finance.service.despesa.DespesaPorIdentificacaoService;
+import com.tsswebapps.finance.service.despesa.ListarCategoriasService;
 import com.tsswebapps.finance.service.despesa.ListasTodasDespesasService;
 import com.tsswebapps.finance.service.despesa.PesquisarDespesaDuplicadaMesService;
 import com.tsswebapps.finance.service.despesa.SalvarDespesaService;
@@ -39,6 +42,14 @@ public class DespesaController {
 	private DespesaPorIdentificacaoService despesaPorIdentificacao;
 	@Autowired
 	private ApagarDespesaService apagarDespesa;
+	@Autowired
+	private ListarCategoriasService listarCategorias;
+	
+	@GetMapping("/categorias")
+	public List<String> listaCategoria() {
+		List<String> categorias = listarCategorias.execute();
+		return categorias;
+	}
 	
 	@PostMapping
 	public ResponseEntity<Despesa> salvar(@Valid @RequestBody DespesaDto despesaDto, BindingResult resultValidation) {
