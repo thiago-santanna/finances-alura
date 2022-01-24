@@ -10,5 +10,7 @@ import com.tsswebapps.finance.model.Despesa;
 
 @Repository
 public interface IDespesaRepository extends JpaRepository<Despesa, Long> {
+	
 	List<Despesa> findByDescricaoAndDataLancamento(String descricao, LocalDate dataLancamento);
+	List<Despesa> findByDescricaoLike(String descricao);
 }
