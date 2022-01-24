@@ -1,6 +1,5 @@
 package com.tsswebapps.finance.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tsswebapps.finance.dto.DespesaDto;
-import com.tsswebapps.finance.model.Categoria;
 import com.tsswebapps.finance.model.Despesa;
 import com.tsswebapps.finance.service.despesa.ApagarDespesaService;
 import com.tsswebapps.finance.service.despesa.DespesaPorIdentificacaoService;

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +26,18 @@ public class Despesa {
 	
 	private LocalDate dataLancamento;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(length = 50)
+	private Categoria categoria;
+	
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
 	public void copyDespesaDto(DespesaDto despesaDto) {
 		this.descricao = despesaDto.getDescricao();
 		this.dataLancamento = despesaDto.getDataLancamento();
@@ -47,7 +61,7 @@ public class Despesa {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dataLancamento, descricao, id);
+		return Objects.hash(categoria, dataLancamento, descricao, id, valor);
 	}
 
 	@Override
@@ -59,8 +73,9 @@ public class Despesa {
 		if (getClass() != obj.getClass())
 			return false;
 		Despesa other = (Despesa) obj;
-		return Objects.equals(dataLancamento, other.dataLancamento) && Objects.equals(descricao, other.descricao)
-				&& Objects.equals(id, other.id);
+		return categoria == other.categoria && Objects.equals(dataLancamento, other.dataLancamento)
+				&& Objects.equals(descricao, other.descricao) && Objects.equals(id, other.id)
+				&& Objects.equals(valor, other.valor);
 	}
 
 	public String getDescricao() {
