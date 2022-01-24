@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ import com.tsswebapps.finance.service.receita.SalvarReceitaService;
 @RequestMapping("/receitas")
 public class ReceitaController {
 	
+	public static final Logger log = LoggerFactory.getLogger(ReceitaController.class);
+		
 	@Autowired
 	private PesquisarReceitaDuplicadaMesService duplicadaMes;
 	@Autowired
@@ -45,6 +49,8 @@ public class ReceitaController {
 		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());		
 		
 		Receita receita = salvarReceitaService.execute(receitaDto.toReceita(), resultValidation);
+		
+		log.info("Receita cadastrada - > ID: " + receita.getId());
 		
 		return new ResponseEntity<Receita>(receita, HttpStatus.CREATED);	
 	}
