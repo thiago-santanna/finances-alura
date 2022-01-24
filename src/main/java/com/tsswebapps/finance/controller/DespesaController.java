@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tsswebapps.finance.dto.DespesaDto;
@@ -58,15 +59,14 @@ public class DespesaController {
 		}
 		
 		despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());
-		System.out.println("vai salvar");
 		Despesa despesa = salvarDespesa.execute(despesaDto.toDespesa());
 		
 		return new ResponseEntity<Despesa>(despesa, HttpStatus.CREATED);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<DespesaDto>> todas(){
-		List<DespesaDto> despesas = listarTodasDespesas.execute();
+	public ResponseEntity<List<DespesaDto>> todas(@RequestParam(required = false, name = "descricao") String descricao){
+		List<DespesaDto> despesas = listarTodasDespesas.execute(descricao);
 		return new ResponseEntity<List<DespesaDto>>(despesas, HttpStatus.OK);
 	}
 	

@@ -16,8 +16,15 @@ public class ListarTodasReceitasService {
 	@Autowired
 	private IReceitaRepository receitaRepository;
 	
-	public List<ReceitaDto> execute(){
-		List<Receita> receitas = receitaRepository.findAll();
+	public List<ReceitaDto> execute(String descricao){
+		List<Receita> receitas = null;
+		
+		if(descricao != null) {
+			receitas = receitaRepository.findByDescricaoContaining(descricao);
+		}
+		else{
+			receitas = receitaRepository.findAll();
+		}				
 		
 		List<ReceitaDto> receitasDto = receitas.stream()
 				.map(rec -> rec.toReceitaDto())

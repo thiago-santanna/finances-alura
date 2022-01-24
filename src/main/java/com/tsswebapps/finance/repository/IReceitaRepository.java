@@ -12,6 +12,6 @@ import com.tsswebapps.finance.model.Receita;
 public interface IReceitaRepository extends JpaRepository<Receita, Long> {
 	
 	List<Receita> findByDescricaoAndDataLancamento(String descricao, LocalDate dataLancamento);
-	List<Receita> findByDescricaoLike(String descricao);
+	List<Receita> findByDescricaoContaining(String descricao);
 
 }

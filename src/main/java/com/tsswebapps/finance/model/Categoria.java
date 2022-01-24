@@ -8,5 +8,7 @@ public enum Categoria {
 	EDUCACAO,
 	LAZER,
 	IMPREVISTOS,
+	CARTAO,
+	EMPRESTIMOS,
 	OUTRAS
 }

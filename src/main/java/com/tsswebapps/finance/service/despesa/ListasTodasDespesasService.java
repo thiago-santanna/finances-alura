@@ -16,8 +16,16 @@ public class ListasTodasDespesasService {
 	@Autowired
 	private IDespesaRepository despesaRepository;
 	
-	public List<DespesaDto> execute(){
-		List<Despesa> despesas = despesaRepository.findAll();
+	public List<DespesaDto> execute(String descricao){
+		List<Despesa> despesas = null;
+		
+		if(descricao != null) {
+			despesas = despesaRepository.findByDescricaoContaining(descricao);
+		}
+		else
+		{
+			despesas = despesaRepository.findAll();
+		}
 		
 		List<DespesaDto> despesaDto = despesas.stream()
 				.map(desp -> desp.toDespesaDto())

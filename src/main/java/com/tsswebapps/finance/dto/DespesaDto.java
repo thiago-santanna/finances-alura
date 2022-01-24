@@ -30,7 +30,7 @@ public class DespesaDto {
 	}
 
 	public Despesa toDespesa() {
-		if(findEnumByName(this.categoria) == null) {
+		if((this.categoria.isBlank() && findEnumByName(this.categoria) == null)) {
 			throw new BadRequestException("Informe uma categoria válida, veja em: /despesas/categorias");
 		}
 		

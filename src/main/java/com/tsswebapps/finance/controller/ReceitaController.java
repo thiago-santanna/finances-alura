@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tsswebapps.finance.dto.ReceitaDto;
@@ -56,8 +57,8 @@ public class ReceitaController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ReceitaDto>> todas(){		
-		List<ReceitaDto> receitasDto = listarTodasReceitas.execute();		
+	public ResponseEntity<List<ReceitaDto>> todas(@RequestParam(required = false, name = "descricao") String descricao){		
+		List<ReceitaDto> receitasDto = listarTodasReceitas.execute(descricao);		
 		return new ResponseEntity<List<ReceitaDto>>(receitasDto, HttpStatus.OK);
 	}
 	
