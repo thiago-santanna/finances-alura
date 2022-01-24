@@ -16,7 +16,7 @@ public class PesquisarDespesaDuplicadaMesService {
 	@Autowired
 	private IDespesaRepository despesaRepository;
 	
-	public void execute(String descricao, LocalDate dataLancamento) {
+	public void execute(String descricao, LocalDate dataLancamento) {	
 		List<Despesa> temDespesas = despesaRepository.findByDescricaoAndDataLancamento(descricao, dataLancamento);
 		
 		if(!temDespesas.isEmpty()) {

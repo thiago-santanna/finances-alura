@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tsswebapps.finance.dto.DespesaDto;
+import com.tsswebapps.finance.exceptions.BadRequestException;
 import com.tsswebapps.finance.model.Despesa;
 import com.tsswebapps.finance.service.despesa.ApagarDespesaService;
 import com.tsswebapps.finance.service.despesa.DespesaPorIdentificacaoService;
@@ -51,9 +52,14 @@ public class DespesaController {
 	
 	@PostMapping
 	public ResponseEntity<Despesa> salvar(@Valid @RequestBody DespesaDto despesaDto, BindingResult resultValidation) {
-		despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());
 		
-		Despesa despesa = salvarDespesa.execute(despesaDto.toDespesa(), resultValidation);
+		if(resultValidation.hasErrors()) {
+			throw new BadRequestException("Informe todos os campos obrigatórios.");
+		}
+		
+		despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());
+		System.out.println("vai salvar");
+		Despesa despesa = salvarDespesa.execute(despesaDto.toDespesa());
 		
 		return new ResponseEntity<Despesa>(despesa, HttpStatus.CREATED);
 	}
@@ -74,10 +80,14 @@ public class DespesaController {
 	public ResponseEntity<DespesaDto> alterar(@PathVariable Long id, 
 			@Valid @RequestBody DespesaDto despesaDto, BindingResult resultValidation){
 		
+		if(resultValidation.hasErrors()) {
+			throw new BadRequestException("Informe todos os campos obrigatórios.");
+		}
+		
 		Despesa despesaAtual = despesaPorIdentificacao.execute(id);
 		despesaAtual.copyDespesaDto(despesaDto);
 			
-		Despesa receitaSalva = salvarDespesa.execute(despesaAtual, resultValidation);
+		Despesa receitaSalva = salvarDespesa.execute(despesaAtual);
 		return new ResponseEntity<DespesaDto>(receitaSalva.toDespesaDto(), HttpStatus.OK);		
 	}
 	

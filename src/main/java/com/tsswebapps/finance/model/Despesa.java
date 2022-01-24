@@ -42,12 +42,14 @@ public class Despesa {
 		this.descricao = despesaDto.getDescricao();
 		this.dataLancamento = despesaDto.getDataLancamento();
 		this.valor = despesaDto.getValor();
+		this.categoria = Categoria.valueOf(despesaDto.getCategoria());
 	}
 
 	public Despesa(String descricao, Double valor, LocalDate dataLancamento) {
 		this.descricao = descricao;
 		this.valor = valor;
 		this.dataLancamento = dataLancamento;
+		this.categoria = Categoria.valueOf("OUTRAS");
 	}
 
 	public Despesa() {

@@ -10,7 +10,7 @@ import com.tsswebapps.finance.model.Categoria;
 @Service
 public class ListarCategoriasService {
 
-	private final Categoria[] categoriasEnum = Categoria.values();
+	private Categoria[] categoriasEnum = Categoria.values();
 	
 	public List<String> execute(){
 		List<String> categorias = new ArrayList<String>();
