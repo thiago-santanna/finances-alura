@@ -23,6 +23,7 @@ import com.tsswebapps.finance.exceptions.BadRequestException;
 import com.tsswebapps.finance.model.Despesa;
 import com.tsswebapps.finance.service.despesa.ApagarDespesaService;
 import com.tsswebapps.finance.service.despesa.DespesaPorIdentificacaoService;
+import com.tsswebapps.finance.service.despesa.DespesasPorMesService;
 import com.tsswebapps.finance.service.despesa.ListarCategoriasService;
 import com.tsswebapps.finance.service.despesa.ListasTodasDespesasService;
 import com.tsswebapps.finance.service.despesa.PesquisarDespesaDuplicadaMesService;
@@ -44,6 +45,8 @@ public class DespesaController {
 	private ApagarDespesaService apagarDespesa;
 	@Autowired
 	private ListarCategoriasService listarCategorias;
+	@Autowired
+	private DespesasPorMesService despesasPorMes;
 	
 	@GetMapping("/categorias")
 	public List<String> listaCategoria() {
@@ -74,6 +77,12 @@ public class DespesaController {
 	public ResponseEntity<DespesaDto> porId(@PathVariable Long id){
 		Despesa despesa = despesaPorIdentificacao.execute(id);
 		return new ResponseEntity<DespesaDto>(despesa.toDespesaDto(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/{ano}/{mes}")
+	public ResponseEntity<List<DespesaDto>> todasPorMes(@PathVariable String ano, @PathVariable String mes){
+		List<DespesaDto> despesas = despesasPorMes.execute(ano, mes);
+		return new ResponseEntity<List<DespesaDto>>(despesas, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")

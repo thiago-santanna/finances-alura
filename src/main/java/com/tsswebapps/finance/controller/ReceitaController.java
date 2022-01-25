@@ -26,6 +26,7 @@ import com.tsswebapps.finance.service.receita.ApagarReceitaService;
 import com.tsswebapps.finance.service.receita.ListarTodasReceitasService;
 import com.tsswebapps.finance.service.receita.PesquisarReceitaDuplicadaMesService;
 import com.tsswebapps.finance.service.receita.ReceitaPorIdentificacaoService;
+import com.tsswebapps.finance.service.receita.ReceitasPorMesService;
 import com.tsswebapps.finance.service.receita.SalvarReceitaService;
 
 @RestController
@@ -44,6 +45,8 @@ public class ReceitaController {
 	private ReceitaPorIdentificacaoService receitaIdentificacao;
 	@Autowired
 	private ApagarReceitaService apagarReceita;
+	@Autowired
+	private ReceitasPorMesService receitasPorMes;
 	
 	@PostMapping
 	public ResponseEntity<Receita> cadastro(@Valid @RequestBody ReceitaDto receitaDto, BindingResult resultValidation) {
@@ -66,6 +69,12 @@ public class ReceitaController {
 	public ResponseEntity<ReceitaDto> porId(@PathVariable Long id){
 		Receita receita = receitaIdentificacao.execute(id);
 		return new ResponseEntity<ReceitaDto>(receita.toReceitaDto(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/{ano}/{mes}")
+	public ResponseEntity<List<ReceitaDto>> todasPorMes(@PathVariable String ano, @PathVariable String mes){
+		List<ReceitaDto> receitas = receitasPorMes.execute(ano, mes);
+		return new ResponseEntity<List<ReceitaDto>>(receitas, HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
