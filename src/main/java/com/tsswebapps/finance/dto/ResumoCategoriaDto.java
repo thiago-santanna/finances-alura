@@ -3,29 +3,13 @@ package com.tsswebapps.finance.dto;
 import java.util.Objects;
 
 public class ResumoCategoriaDto {
+
 	private String categoria;
-	private double total;
+	private Double total;
 
-	public ResumoCategoriaDto(String categoria, double total) {
-		super();
-		this.categoria = categoria;
-		this.total = total;
-	}
-
-	public String getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
-	}
-
-	public double getTotal() {
-		return total;
-	}
-
-	public void setTotal(double total) {
-		this.total = total;
+	@Override
+	public String toString() {
+		return "ResumoCategoriaDto [categoria=" + categoria + ", total=" + total + "]";
 	}
 
 	@Override
@@ -42,16 +26,28 @@ public class ResumoCategoriaDto {
 		if (getClass() != obj.getClass())
 			return false;
 		ResumoCategoriaDto other = (ResumoCategoriaDto) obj;
-		return Objects.equals(categoria, other.categoria)
-				&& Double.doubleToLongBits(total) == Double.doubleToLongBits(other.total);
+		return Objects.equals(categoria, other.categoria) && Objects.equals(total, other.total);
 	}
 
-	@Override
-	public String toString() {
-		return "ResumoCategoriaDto [categoria=" + categoria + ", total=" + total + "]";
+	public ResumoCategoriaDto(String categoria, Double total) {
+		this.categoria = categoria;
+		this.total = total != null ? total : 0d;
 	}
 
-	public ResumoCategoriaDto() {
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 
 }

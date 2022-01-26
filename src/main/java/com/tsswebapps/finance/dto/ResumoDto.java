@@ -1,45 +1,38 @@
 package com.tsswebapps.finance.dto;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class ResumoDto {
-	private double totalReceitas;
-	private double totalDespesas;
-	private double saldo;
-	private List<ResumoCategoriaDto> resumoCategoria;
+	private Double totalReceitas;
+	private Double totalDespesas;
+	private Double saldo;
+	private List<ResumoCategoriaDto> resumoCategoria = new ArrayList<>();
 
 	public void addResumoCategoria(ResumoCategoriaDto resumoCategoriaDto) {
 		this.resumoCategoria.add(resumoCategoriaDto);
 	}
 
-	public double getTotalReceitas() {
+	public Double getTotalReceitas() {
 		return totalReceitas;
 	}
 
-	public void setTotalReceitas(double totalReceitas) {
+	public void setTotalReceitas(Double totalReceitas) {
 		this.totalReceitas = totalReceitas;
 	}
 
-	public double getTotalDespesas() {
+	public Double getTotalDespesas() {
 		return totalDespesas;
 	}
 
-	public void setTotalDespesas(double totalDespesas) {
+	public void setTotalDespesas(Double totalDespesas) {
 		this.totalDespesas = totalDespesas;
 	}
 
-	public double getSaldo() {
+	public Double getSaldo() {
 		return saldo;
-	}
-
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
-	}
-
-	public List<ResumoCategoriaDto> getResumoCategoria() {
-		return Collections.unmodifiableList(resumoCategoria);
 	}
 
 	@Override
@@ -56,10 +49,17 @@ public class ResumoDto {
 		if (getClass() != obj.getClass())
 			return false;
 		ResumoDto other = (ResumoDto) obj;
-		return Objects.equals(resumoCategoria, other.resumoCategoria)
-				&& Double.doubleToLongBits(saldo) == Double.doubleToLongBits(other.saldo)
-				&& Double.doubleToLongBits(totalDespesas) == Double.doubleToLongBits(other.totalDespesas)
-				&& Double.doubleToLongBits(totalReceitas) == Double.doubleToLongBits(other.totalReceitas);
+		return Objects.equals(resumoCategoria, other.resumoCategoria) && Objects.equals(saldo, other.saldo)
+				&& Objects.equals(totalDespesas, other.totalDespesas)
+				&& Objects.equals(totalReceitas, other.totalReceitas);
+	}
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+
+	public List<ResumoCategoriaDto> getResumoCategoria() {
+		return Collections.unmodifiableList(resumoCategoria);
 	}
 
 	@Override
