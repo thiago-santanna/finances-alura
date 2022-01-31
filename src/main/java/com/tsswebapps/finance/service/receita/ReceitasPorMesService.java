@@ -16,7 +16,7 @@ public class ReceitasPorMesService {
 	@Autowired
 	private IReceitaRepository repository;
 	
-	public List<ReceitaDto> execute(String ano, String mes){
+	public List<ReceitaDto> execute(Integer ano, Integer mes){
 		List<Receita> receitasPorMes = repository.findByPorMes(ano, mes);
 		
 		List<ReceitaDto> receitas = receitasPorMes.stream()

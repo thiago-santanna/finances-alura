@@ -24,6 +24,6 @@ public interface IDespesaRepository extends JpaRepository<Despesa, Long> {
 			+ "WHERE EXTRACT(YEAR FROM data_lancamento ) = ?1 "
 			+ "AND EXTRACT(MONTH FROM data_lancamento) = ?2 "
 			+ "AND categoria = ?3 "
-			+ "GROUP BY categoria LIMIT 1")
+			+ "GROUP BY categoria")
 	Double resumoPorCategoria(String ano, String mes, String categoria);
 }

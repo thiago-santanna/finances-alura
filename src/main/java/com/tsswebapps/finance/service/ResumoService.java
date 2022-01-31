@@ -26,8 +26,9 @@ public class ResumoService {
 	@Autowired
 	private ListarCategoriasService listarCategorias;
 
-	public ResumoDto execute(String mes, String ano) {		
-		List<Receita> receitasByPorMes = receitaRepository.findByPorMes(ano, mes);	
+	public ResumoDto execute(String mes, String ano) {
+		
+		List<Receita> receitasByPorMes = receitaRepository.findByPorMes(Integer.valueOf(ano), Integer.valueOf(mes));	
 		Double totalReceitas = receitasByPorMes.stream()
 				.reduce(0d, (total, receita) -> total + receita.getValor(), Double::sum);	
 		

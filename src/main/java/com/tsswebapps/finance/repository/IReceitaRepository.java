@@ -14,7 +14,11 @@ public interface IReceitaRepository extends JpaRepository<Receita, Long> {
 	
 	List<Receita> findByDescricaoAndDataLancamento(String descricao, LocalDate dataLancamento);
 	List<Receita> findByDescricaoContaining(String descricao);	
-	@Query(nativeQuery = true, value = "SELECT * FROM receita WHERE EXTRACT(YEAR FROM data_lancamento ) = ?1 AND EXTRACT( MONTH FROM data_lancamento) = ?2")
-	List<Receita> findByPorMes(String ano, String mes);
+	
+	//@Query(nativeQuery = true, value = "SELECT * FROM receita WHERE EXTRACT(YEAR FROM data_lancamento ) = ?1 AND EXTRACT( MONTH FROM data_lancamento) = ?2")
+	//List<Receita> findByPorMes(String ano, String mes);
+	
+	@Query("select r from Receita r where YEAR(r.dataLancamento) = :ano and MONTH(r.dataLancamento) = :mes")
+	List<Receita> findByPorMes(Integer ano, Integer mes);
 
 }

@@ -72,7 +72,7 @@ public class ReceitaController {
 	}
 	
 	@GetMapping("/{ano}/{mes}")
-	public ResponseEntity<List<ReceitaDto>> todasPorMes(@PathVariable String ano, @PathVariable String mes){
+	public ResponseEntity<List<ReceitaDto>> todasPorMes(@PathVariable Integer ano, @PathVariable Integer mes){
 		List<ReceitaDto> receitas = receitasPorMes.execute(ano, mes);
 		return new ResponseEntity<List<ReceitaDto>>(receitas, HttpStatus.OK);
 	}
