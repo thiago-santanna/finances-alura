@@ -19,8 +19,8 @@ public class UserController {
 	private CadastrarUsuarioService service;
 	
 	@PostMapping
-	public ResponseEntity<String> cadastrar(@RequestBody UserDto user){		
+	public ResponseEntity<Void> cadastrar(@RequestBody UserDto user){		
 		service.execute(user);		
-		return new ResponseEntity<String>("Cadastrado", HttpStatus.CREATED);
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 }

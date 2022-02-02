@@ -41,8 +41,11 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Perfil> perfis = new ArrayList<>();
 
-	public UserDto userDto(User user) {
+	public UserDto userDto() {
 		UserDto userDto = new UserDto();
+		userDto.setNome(this.nome);
+		userDto.setEmail(this.email);
+		userDto.setSenha(this.senha);
 		return userDto;
 	}
 	
@@ -58,8 +61,6 @@ public class User implements UserDetails {
 		this.senha = senha;
 		this.perfis = perfis;
 	}
-
-
 
 	public void setPerfis(List<Perfil> perfis) {
 		this.perfis = perfis;
