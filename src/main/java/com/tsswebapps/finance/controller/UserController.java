@@ -1,5 +1,6 @@
 package com.tsswebapps.finance.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,21 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tsswebapps.finance.dto.UserDto;
-import com.tsswebapps.finance.repository.IUsuarioRepository;
+import com.tsswebapps.finance.service.user.CadastrarUsuarioService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
-	private IUsuarioRepository repository;
+	
+	@Autowired
+	private CadastrarUsuarioService service;
 	
 	@PostMapping
-	public ResponseEntity<String> cadastrar(@RequestBody UserDto user){
+	public ResponseEntity<String> cadastrar(@RequestBody UserDto user){		
+		service.execute(user);		
 		return new ResponseEntity<String>("Cadastrado", HttpStatus.CREATED);
-	}
-	
-	@PostMapping("/login")
-	public ResponseEntity<Void> login(@RequestBody UserDto user){
-		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

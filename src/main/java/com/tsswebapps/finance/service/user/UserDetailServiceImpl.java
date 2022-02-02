@@ -14,14 +14,14 @@ import com.tsswebapps.finance.repository.IUsuarioRepository;
 public class UserDetailServiceImpl implements UserDetailsService {
 	
 	private IUsuarioRepository repository;
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> userByName = repository.findByUserName(username);
+		Optional<User> usuario = repository.findByEmail(username);
 		
-		userByName.orElseThrow( () -> new UsernameNotFoundException(username + " not found."));
-		
-		return userByName.map(UserDetailImpl::new).get();
+		if (usuario.isPresent()) {
+			return usuario.get();
+		}
+		throw new UsernameNotFoundException("Usuario ou senha inválidos.");
 	}
-
 }

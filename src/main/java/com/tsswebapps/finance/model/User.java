@@ -1,69 +1,68 @@
 package com.tsswebapps.finance.model;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.tsswebapps.finance.dto.UserDto;
 
 @Entity
 @Table(name = "usuario")
-public class User {
+public class User implements UserDetails {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private boolean isActive;
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, userName);
+	@Column(length = 100)
+	private String nome;
+
+	@Column(length = 80)
+	private String email;
+
+	@Column(length = 64)
+	private String senha;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private List<Perfil> perfis = new ArrayList<>();
+
+	public UserDto userDto(User user) {
+		UserDto userDto = new UserDto();
+		return userDto;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		return Objects.equals(id, other.id) && Objects.equals(userName, other.userName);
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", isActive=" + isActive + ", userName=" + userName + ", password=" + password
-				+ ", roles=" + roles + "]";
-	}
-
-	private String userName;
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	private String password;
-	private String roles;
-
+	
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(Long id, boolean isActive, String userName, String password, String roles) {
+	public User(Long id, String nome, String email, String senha, List<Perfil> perfis) {
 		super();
 		this.id = id;
-		this.isActive = isActive;
-		this.userName = userName;
-		this.password = password;
-		this.roles = roles;
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.perfis = perfis;
+	}
+
+
+
+	public void setPerfis(List<Perfil> perfis) {
+		this.perfis = perfis;
 	}
 
 	public Long getId() {
@@ -74,27 +73,77 @@ public class User {
 		this.id = id;
 	}
 
-	public boolean isActive() {
-		return isActive;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return this.perfis;
+	}
+
+	@Override
 	public String getPassword() {
-		return password;
+		// TODO Auto-generated method stub
+		return this.senha;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.email;
 	}
 
-	public String getRoles() {
-		return roles;
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
-	public void setRoles(String roles) {
-		this.roles = roles;
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

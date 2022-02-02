@@ -8,5 +8,5 @@ import com.tsswebapps.finance.model.User;
 
 public interface IUsuarioRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findByUserName(String name);
+	Optional<User> findByEmail(String email);
 }
