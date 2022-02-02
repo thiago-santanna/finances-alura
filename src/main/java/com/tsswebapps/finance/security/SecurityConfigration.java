@@ -36,26 +36,28 @@ public class SecurityConfigration extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/users").permitAll()
-			.antMatchers(HttpMethod.GET, "/despesas/categorias").permitAll()
+			//.antMatchers(HttpMethod.GET, "/despesas/categorias").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.httpBasic()
+			.and()
+			.cors()
 			.and()
 			.csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
-//	@Bean
-//	CorsConfigurationSource corsConfigurationSource() {
-//		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-//		
-//		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
-//		
-//		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		
-//		source.registerCorsConfiguration("/**", configuration);
-//		
-//		return source;
-//	}
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
+		
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		
+		source.registerCorsConfiguration("/**", configuration);
+		
+		return source;
+	}
 	
 }
