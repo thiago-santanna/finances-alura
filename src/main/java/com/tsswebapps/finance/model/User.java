@@ -41,14 +41,20 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Perfil> perfis = new ArrayList<>();
 
-	public UserDto userDto() {
+//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	private Set<Despesa> despesas = new HashSet<>();
+//
+//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	private Set<Receita> receitas = new HashSet<>();
+
+	public UserDto toUserDto() {
 		UserDto userDto = new UserDto();
 		userDto.setNome(this.nome);
 		userDto.setEmail(this.email);
 		userDto.setSenha(this.senha);
 		return userDto;
 	}
-	
+
 	public User() {
 		// TODO Auto-generated constructor stub
 	}

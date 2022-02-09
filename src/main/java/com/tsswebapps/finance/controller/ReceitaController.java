@@ -21,13 +21,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tsswebapps.finance.dto.ReceitaDto;
+import com.tsswebapps.finance.exceptions.BadRequestException;
 import com.tsswebapps.finance.model.Receita;
+import com.tsswebapps.finance.model.User;
 import com.tsswebapps.finance.service.receita.ApagarReceitaService;
 import com.tsswebapps.finance.service.receita.ListarTodasReceitasService;
 import com.tsswebapps.finance.service.receita.PesquisarReceitaDuplicadaMesService;
 import com.tsswebapps.finance.service.receita.ReceitaPorIdentificacaoService;
 import com.tsswebapps.finance.service.receita.ReceitasPorMesService;
 import com.tsswebapps.finance.service.receita.SalvarReceitaService;
+import com.tsswebapps.finance.service.user.BuscaUsuarioPorId;
 
 @RestController
 @RequestMapping("/receitas")
@@ -47,16 +50,23 @@ public class ReceitaController {
 	private ApagarReceitaService apagarReceita;
 	@Autowired
 	private ReceitasPorMesService receitasPorMes;
+	@Autowired
+	private BuscaUsuarioPorId buscaUsuarioPorId;
 	
 	@PostMapping
-	public ResponseEntity<Receita> cadastro(@Valid @RequestBody ReceitaDto receitaDto, BindingResult resultValidation) {
-		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());		
+	public ResponseEntity<ReceitaDto> salvar(@Valid @RequestBody ReceitaDto receitaDto, BindingResult resultValidation) {
 		
-		Receita receita = salvarReceitaService.execute(receitaDto.toReceita(), resultValidation);
+		if(resultValidation.hasErrors()) {
+			throw new BadRequestException("Informe todos os campos obrigatórios.");
+		}
 		
-		log.info("Receita cadastrada - > ID: " + receita.getId());
+		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());	
 		
-		return new ResponseEntity<Receita>(receita, HttpStatus.CREATED);	
+		User user = buscaUsuarioPorId.execute(receitaDto.getUserId());
+		
+		salvarReceitaService.execute(receitaDto.toReceita(user), resultValidation);
+		
+		return new ResponseEntity<ReceitaDto>(receitaDto, HttpStatus.CREATED);	
 	}
 	
 	@GetMapping

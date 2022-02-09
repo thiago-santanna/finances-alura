@@ -1,13 +1,19 @@
 package com.tsswebapps.finance.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.tsswebapps.finance.dto.ReceitaDto;
 
@@ -19,14 +25,49 @@ public class Receita {
 	@Column(length = 150)
 	private String descricao;
 	private Double valor;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 	private LocalDate dataLancamento;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User user;
+
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
+
 	public ReceitaDto toReceitaDto() {
-		ReceitaDto receitaDto = new ReceitaDto(
-				this.descricao, this.valor, this.dataLancamento);
+		ReceitaDto receitaDto = new ReceitaDto();
+		receitaDto.setDescricao(this.descricao);
+		receitaDto.setValor(this.valor);
+		receitaDto.setDataLancamento(this.dataLancamento);
 		return receitaDto;
 	}
-	
+
 	public void copyReceitaDto(ReceitaDto receitaDto) {
 		this.descricao = receitaDto.getDescricao();
 		this.dataLancamento = receitaDto.getDataLancamento();
@@ -64,15 +105,9 @@ public class Receita {
 		return id;
 	}
 
-	public Receita(String descricao, Double valor, LocalDate dataLancamento) {
-		this.descricao = descricao;
-		this.valor = valor;
-		this.dataLancamento = dataLancamento;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(dataLancamento, descricao, id, valor);
+		return Objects.hash(createdAt, dataLancamento, descricao, id, updatedAt, user, valor);
 	}
 
 	@Override
@@ -84,8 +119,10 @@ public class Receita {
 		if (getClass() != obj.getClass())
 			return false;
 		Receita other = (Receita) obj;
-		return Objects.equals(dataLancamento, other.dataLancamento) && Objects.equals(descricao, other.descricao)
-				&& Objects.equals(id, other.id) && Objects.equals(valor, other.valor);
+		return Objects.equals(createdAt, other.createdAt) && Objects.equals(dataLancamento, other.dataLancamento)
+				&& Objects.equals(descricao, other.descricao) && Objects.equals(id, other.id)
+				&& Objects.equals(updatedAt, other.updatedAt) && Objects.equals(user, other.user)
+				&& Objects.equals(valor, other.valor);
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tsswebapps.finance.dto.DespesaDto;
 import com.tsswebapps.finance.exceptions.BadRequestException;
 import com.tsswebapps.finance.model.Despesa;
+import com.tsswebapps.finance.model.User;
 import com.tsswebapps.finance.service.despesa.ApagarDespesaService;
 import com.tsswebapps.finance.service.despesa.DespesaPorIdentificacaoService;
 import com.tsswebapps.finance.service.despesa.DespesasPorMesService;
@@ -28,6 +29,7 @@ import com.tsswebapps.finance.service.despesa.ListarCategoriasService;
 import com.tsswebapps.finance.service.despesa.ListasTodasDespesasService;
 import com.tsswebapps.finance.service.despesa.PesquisarDespesaDuplicadaMesService;
 import com.tsswebapps.finance.service.despesa.SalvarDespesaService;
+import com.tsswebapps.finance.service.user.BuscaUsuarioPorId;
 
 @RestController
 @RequestMapping("/despesas")
@@ -47,6 +49,8 @@ public class DespesaController {
 	private ListarCategoriasService listarCategorias;
 	@Autowired
 	private DespesasPorMesService despesasPorMes;
+	@Autowired
+	private BuscaUsuarioPorId buscaUsuarioPorId;
 	
 	@GetMapping("/categorias")
 	public List<String> listaCategoria() {
@@ -55,16 +59,19 @@ public class DespesaController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Despesa> salvar(@Valid @RequestBody DespesaDto despesaDto, BindingResult resultValidation) {
+	public ResponseEntity<DespesaDto> salvar(@Valid @RequestBody DespesaDto despesaDto, BindingResult resultValidation) {
 		
 		if(resultValidation.hasErrors()) {
 			throw new BadRequestException("Informe todos os campos obrigatórios.");
 		}
-		
+			
 		despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());
-		Despesa despesa = salvarDespesa.execute(despesaDto.toDespesa());
 		
-		return new ResponseEntity<Despesa>(despesa, HttpStatus.CREATED);
+		User user = buscaUsuarioPorId.execute(despesaDto.getUserId());
+		
+		salvarDespesa.execute(despesaDto.toDespesa(user));
+		
+		return new ResponseEntity<DespesaDto>(despesaDto, HttpStatus.CREATED);
 	}
 	
 	@GetMapping

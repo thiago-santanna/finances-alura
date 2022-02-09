@@ -14,62 +14,71 @@ public class UserDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	private String nome;
-	private String email;
-	private String senha;
+	private Long id;
 
-	public UserDto(String nome, String email, String senha) {
+	public Long getId() {
+		return id;
+	}
+
+	public UserDto(Long id, String nome, String email, String senha) {
+		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
 	}
 
-
-	public String getNome() {
-		return nome;
+	public void setId(Long id) {
+		this.id = id;
 	}
-
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 
 	public String getSenha() {
 		return senha;
 	}
 
+	private String nome;
+	private String email;
+	private String senha;
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public void setSenha(String password) {
 		this.senha = password;
 	}
 
-
-	public User toUser() {	
+	public User toUser() {
 		BCryptPasswordEncoder bEncoder = new BCryptPasswordEncoder();
-		
+
 		User user = new User();
-		
+
 		Perfil perfilUsuario = new Perfil();
-		perfilUsuario.setNome("USER");		
-		List<Perfil> perfis = new ArrayList<>();		
+		perfilUsuario.setNome("USER");
+		List<Perfil> perfis = new ArrayList<>();
 		perfis.add(perfilUsuario);
-		
-		user.setPerfis(perfis);			
+
+		user.setPerfis(perfis);
 		user.setNome(this.nome);
 		user.setEmail(this.email);
 		user.setSenha(bEncoder.encode(this.senha));
-		
+
 		return user;
+	}
+	
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", nome=" + nome + ", email=" + email + "]";
 	}
 }

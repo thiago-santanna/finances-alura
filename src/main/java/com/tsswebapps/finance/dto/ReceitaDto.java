@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tsswebapps.finance.model.Receita;
+import com.tsswebapps.finance.model.User;
 
 public class ReceitaDto {
 	@NotBlank
@@ -17,20 +18,25 @@ public class ReceitaDto {
 	@NotNull
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dataLancamento;
+	
+	private Long userId;
 
-	public Receita toReceita() {
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Receita toReceita(User user) {
 		Receita receita = new Receita();
 		receita.setDescricao(this.descricao);
 		receita.setDataLancamento(this.dataLancamento);
 		receita.setValor(this.valor);
+		receita.setUser(user);
 
 		return receita;
-	}
-
-	public ReceitaDto(String descricao, Double valor, LocalDate dataLancamento) {
-		this.descricao = descricao;
-		this.valor = valor;
-		this.dataLancamento = dataLancamento;
 	}
 
 	public String getDescricao() {
@@ -59,7 +65,7 @@ public class ReceitaDto {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dataLancamento, descricao, valor);
+		return Objects.hash(dataLancamento, descricao, userId, valor);
 	}
 
 	@Override
@@ -72,12 +78,15 @@ public class ReceitaDto {
 			return false;
 		ReceitaDto other = (ReceitaDto) obj;
 		return Objects.equals(dataLancamento, other.dataLancamento) && Objects.equals(descricao, other.descricao)
-				&& Objects.equals(valor, other.valor);
+				&& Objects.equals(userId, other.userId) && Objects.equals(valor, other.valor);
 	}
 
 	@Override
 	public String toString() {
-		return "ReceitaDto [descricao=" + descricao + ", valor=" + valor + ", dataLancamento=" + dataLancamento + "]";
+		return "ReceitaDto [descricao=" + descricao + ", valor=" + valor + ", dataLancamento=" + dataLancamento
+				+ ", userId=" + userId + "]";
 	}
 
+	
+	
 }
