@@ -26,7 +26,6 @@ import com.tsswebapps.finance.model.Receita;
 import com.tsswebapps.finance.model.User;
 import com.tsswebapps.finance.service.receita.ApagarReceitaService;
 import com.tsswebapps.finance.service.receita.ListarTodasReceitasService;
-import com.tsswebapps.finance.service.receita.PesquisarReceitaDuplicadaMesService;
 import com.tsswebapps.finance.service.receita.ReceitaPorIdentificacaoService;
 import com.tsswebapps.finance.service.receita.ReceitasPorMesService;
 import com.tsswebapps.finance.service.receita.SalvarReceitaService;
@@ -39,8 +38,6 @@ public class ReceitaController {
 	
 	public static final Logger log = LoggerFactory.getLogger(ReceitaController.class);
 		
-	@Autowired
-	private PesquisarReceitaDuplicadaMesService duplicadaMes;
 	@Autowired
 	private SalvarReceitaService salvarReceitaService;
 	@Autowired
@@ -65,7 +62,7 @@ public class ReceitaController {
 		
 		User user = buscaUsuarioPorUserName.execute(usuarioLogado.execute());
 		
-		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
+		//duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
 		
 		salvarReceitaService.execute(receitaDto.toReceita(user), resultValidation);
 		

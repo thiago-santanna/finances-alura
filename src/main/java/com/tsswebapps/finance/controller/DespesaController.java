@@ -27,7 +27,6 @@ import com.tsswebapps.finance.service.despesa.DespesaPorIdentificacaoService;
 import com.tsswebapps.finance.service.despesa.DespesasPorMesService;
 import com.tsswebapps.finance.service.despesa.ListarCategoriasService;
 import com.tsswebapps.finance.service.despesa.ListasTodasDespesasService;
-import com.tsswebapps.finance.service.despesa.PesquisarDespesaDuplicadaMesService;
 import com.tsswebapps.finance.service.despesa.SalvarDespesaService;
 import com.tsswebapps.finance.service.user.BuscaUsuarioPorUserName;
 import com.tsswebapps.finance.service.user.UsuarioLogado;
@@ -36,8 +35,6 @@ import com.tsswebapps.finance.service.user.UsuarioLogado;
 @RequestMapping("/despesas")
 public class DespesaController {
 	
-	@Autowired
-	private PesquisarDespesaDuplicadaMesService despesaDuplicadaMes;
 	@Autowired
 	private SalvarDespesaService salvarDespesa;
 	@Autowired
@@ -70,7 +67,7 @@ public class DespesaController {
 		
 		User user = buscaUsuarioPorUserName.execute(usuarioLogado.execute());
 			
-		despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());		
+		//despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());Foi usado apenas no desafio		
 						
 		salvarDespesa.execute(despesaDto.toDespesa(user));
 		
