@@ -29,7 +29,8 @@ import com.tsswebapps.finance.service.despesa.ListarCategoriasService;
 import com.tsswebapps.finance.service.despesa.ListasTodasDespesasService;
 import com.tsswebapps.finance.service.despesa.PesquisarDespesaDuplicadaMesService;
 import com.tsswebapps.finance.service.despesa.SalvarDespesaService;
-import com.tsswebapps.finance.service.user.BuscaUsuarioPorId;
+import com.tsswebapps.finance.service.user.BuscaUsuarioPorUserName;
+import com.tsswebapps.finance.service.user.UsuarioLogado;
 
 @RestController
 @RequestMapping("/despesas")
@@ -50,7 +51,9 @@ public class DespesaController {
 	@Autowired
 	private DespesasPorMesService despesasPorMes;
 	@Autowired
-	private BuscaUsuarioPorId buscaUsuarioPorId;
+	private BuscaUsuarioPorUserName buscaUsuarioPorUserName;
+	@Autowired
+	private UsuarioLogado usuarioLogado;
 	
 	@GetMapping("/categorias")
 	public List<String> listaCategoria() {
@@ -64,11 +67,11 @@ public class DespesaController {
 		if(resultValidation.hasErrors()) {
 			throw new BadRequestException("Informe todos os campos obrigatórios.");
 		}
+		
+		User user = buscaUsuarioPorUserName.execute(usuarioLogado.execute());
 			
-		despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());
-		
-		User user = buscaUsuarioPorId.execute(despesaDto.getUserId());
-		
+		despesaDuplicadaMes.execute(despesaDto.getDescricao(), despesaDto.getDataLancamento());		
+						
 		salvarDespesa.execute(despesaDto.toDespesa(user));
 		
 		return new ResponseEntity<DespesaDto>(despesaDto, HttpStatus.CREATED);

@@ -30,7 +30,8 @@ import com.tsswebapps.finance.service.receita.PesquisarReceitaDuplicadaMesServic
 import com.tsswebapps.finance.service.receita.ReceitaPorIdentificacaoService;
 import com.tsswebapps.finance.service.receita.ReceitasPorMesService;
 import com.tsswebapps.finance.service.receita.SalvarReceitaService;
-import com.tsswebapps.finance.service.user.BuscaUsuarioPorId;
+import com.tsswebapps.finance.service.user.BuscaUsuarioPorUserName;
+import com.tsswebapps.finance.service.user.UsuarioLogado;
 
 @RestController
 @RequestMapping("/receitas")
@@ -51,7 +52,9 @@ public class ReceitaController {
 	@Autowired
 	private ReceitasPorMesService receitasPorMes;
 	@Autowired
-	private BuscaUsuarioPorId buscaUsuarioPorId;
+	private BuscaUsuarioPorUserName buscaUsuarioPorUserName;
+	@Autowired
+	private UsuarioLogado usuarioLogado;
 	
 	@PostMapping
 	public ResponseEntity<ReceitaDto> salvar(@Valid @RequestBody ReceitaDto receitaDto, BindingResult resultValidation) {
@@ -60,9 +63,9 @@ public class ReceitaController {
 			throw new BadRequestException("Informe todos os campos obrigatórios.");
 		}
 		
-		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());	
+		User user = buscaUsuarioPorUserName.execute(usuarioLogado.execute());
 		
-		User user = buscaUsuarioPorId.execute(receitaDto.getUserId());
+		duplicadaMes.execute(receitaDto.getDescricao(), receitaDto.getDataLancamento());
 		
 		salvarReceitaService.execute(receitaDto.toReceita(user), resultValidation);
 		

@@ -18,16 +18,6 @@ public class ReceitaDto {
 	@NotNull
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dataLancamento;
-	
-	private Long userId;
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
 
 	public Receita toReceita(User user) {
 		Receita receita = new Receita();
@@ -65,7 +55,7 @@ public class ReceitaDto {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dataLancamento, descricao, userId, valor);
+		return Objects.hash(dataLancamento, descricao, valor);
 	}
 
 	@Override
@@ -78,15 +68,13 @@ public class ReceitaDto {
 			return false;
 		ReceitaDto other = (ReceitaDto) obj;
 		return Objects.equals(dataLancamento, other.dataLancamento) && Objects.equals(descricao, other.descricao)
-				&& Objects.equals(userId, other.userId) && Objects.equals(valor, other.valor);
+				&& Objects.equals(valor, other.valor);
 	}
 
 	@Override
 	public String toString() {
-		return "ReceitaDto [descricao=" + descricao + ", valor=" + valor + ", dataLancamento=" + dataLancamento
-				+ ", userId=" + userId + "]";
+		return "ReceitaDto [descricao=" + descricao + ", valor=" + valor + ", dataLancamento=" + dataLancamento + "]";
 	}
-
 	
 	
 }

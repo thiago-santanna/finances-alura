@@ -10,13 +10,13 @@ import com.tsswebapps.finance.model.User;
 import com.tsswebapps.finance.repository.IUsuarioRepository;
 
 @Service
-public class BuscaUsuarioPorId {
+public class BuscaUsuarioPorUserName {
 	
 	@Autowired
 	private IUsuarioRepository repository;
 	
-	public User execute(Long id) {
-		Optional<User> user = repository.findById(id);
+	public User execute(String userName) {
+		Optional<User> user = repository.findByEmail(userName);
 		return user.orElseThrow(NotFoundException::new);
 	}
 }
