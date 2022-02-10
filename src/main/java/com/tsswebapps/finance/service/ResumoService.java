@@ -13,6 +13,8 @@ import com.tsswebapps.finance.model.Receita;
 import com.tsswebapps.finance.repository.IDespesaRepository;
 import com.tsswebapps.finance.repository.IReceitaRepository;
 import com.tsswebapps.finance.service.despesa.ListarCategoriasService;
+import com.tsswebapps.finance.service.user.BuscaUsuarioPorUserName;
+import com.tsswebapps.finance.service.user.UsuarioLogado;
 
 @Service
 public class ResumoService {
@@ -25,15 +27,25 @@ public class ResumoService {
 
 	@Autowired
 	private ListarCategoriasService listarCategorias;
+	
+	@Autowired
+	private BuscaUsuarioPorUserName buscaUsuarioPorUserName;
+	
+	@Autowired
+	private UsuarioLogado usuarioLogado;
 
 	public ResumoDto execute(String mes, String ano) {
 		
+		Long userId = buscaUsuarioPorUserName.execute(usuarioLogado.execute()).getId();
+		
 		List<Receita> receitasByPorMes = receitaRepository.findByPorMes(Integer.valueOf(ano), Integer.valueOf(mes));	
 		Double totalReceitas = receitasByPorMes.stream()
+				.filter(desp -> desp.getUser().getId() == userId)
 				.reduce(0d, (total, receita) -> total + receita.getValor(), Double::sum);	
 		
 		List<Despesa> despesasByPorMes = despesaRepository.findByPorMes(ano, mes);		
 		Double totalDespesas = despesasByPorMes.stream()
+				.filter(desp -> desp.getUser().getId() == userId)
 				.reduce(0d, (total, despesa) -> total + despesa.getValor(), Double::sum );
 		
 		Double saldoFinalMes = totalReceitas - totalDespesas;
@@ -41,7 +53,7 @@ public class ResumoService {
 		List<String> categorias = listarCategorias.execute();
 				
 		List<ResumoCategoriaDto> resumoCategoriaDto = categorias.stream()
-				.map(cat -> new ResumoCategoriaDto(cat, despesaRepository.resumoPorCategoria(ano, mes, cat)))
+				.map(cat -> new ResumoCategoriaDto(cat, despesaRepository.resumoPorCategoria(ano, mes, cat, userId)))
 				.collect(Collectors.toList());	
 		
 		ResumoDto resumoDto = new ResumoDto();
